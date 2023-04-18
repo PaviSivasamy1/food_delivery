@@ -1,6 +1,5 @@
 package com.example.pickup_m_service.kafka;
-
-import com.example.order_m_service.model.OrderEvent;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,10 +12,14 @@ public class PickUpConsumer {
 
     @KafkaListener(topics="${spring.kafka.topic.name}",
     groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(OrderEvent orderEvent){
+    public void consume(ConsumerRecord<String, String> record){
+        try {
+            LOGGER.info(String.format("Order event =>  %s", record.toString()));
+        }
+        catch(Exception e){
+            LOGGER.error(String.format("exception thrown %s",e));
+        }
 
-
-        LOGGER.info(String.format("Order Picked Up %s",orderEvent.toString()));
 
     }
 }

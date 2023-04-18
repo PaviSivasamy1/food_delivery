@@ -13,6 +13,7 @@ public class KafkaConfig {
 @Bean
     public NewTopic topic(){
         return TopicBuilder.name(topic)
+                .partitions(2)
                 .build();
     }
 }

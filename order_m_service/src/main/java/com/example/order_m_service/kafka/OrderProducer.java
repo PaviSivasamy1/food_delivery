@@ -33,6 +33,7 @@ public class OrderProducer {
         Message<OrderEvent> message= MessageBuilder
                 .withPayload(orderEvent)
                 .setHeader(KafkaHeaders.TOPIC,topic.name())
+                .setHeader(KafkaHeaders.KEY,"food_order")
                 .build();
 
         kafkaTemplate.send(message);
