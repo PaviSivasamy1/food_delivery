@@ -24,8 +24,6 @@ public class OrderController {
          order.setOrderID(UUID.randomUUID().toString());
 
         OrderEvent orderEvent=new OrderEvent();
-        orderEvent.setStatus("Order is getting Ready");
-        orderEvent.setMessage("Our delivery Partner is waiting to pickup your order");
         orderEvent.setOrder(order);
 
         orderProducer.sendMessage(orderEvent);
