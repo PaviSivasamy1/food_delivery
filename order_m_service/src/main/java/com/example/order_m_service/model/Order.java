@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Order {
     private String orderID;
+    private String key;
     private List<String> items;
     private List<String> qty;
     private Long price;

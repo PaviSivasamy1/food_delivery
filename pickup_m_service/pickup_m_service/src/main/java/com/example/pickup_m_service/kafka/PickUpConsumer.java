@@ -13,11 +13,15 @@ public class PickUpConsumer {
     @KafkaListener(topics="${spring.kafka.topic.name}",
     groupId = "${spring.kafka.consumer.group-id}")
     public void consume(ConsumerRecord<String, String> record){
-        try {
-            LOGGER.info(String.format("Order event =>  %s", record.toString()));
+        if(record.key().equals("PICKUP")) {
+            try {
+                LOGGER.info(String.format("Order PickUp =>  %s", record.toString()));
+            } catch (Exception e) {
+                LOGGER.error(String.format("exception thrown %s", e));
+            }
         }
-        catch(Exception e){
-            LOGGER.error(String.format("exception thrown %s",e));
+        else{
+            LOGGER.info("Key doesnt match with PickUp, waiting for the message to log");
         }
 
 

@@ -17,7 +17,6 @@ public class OrderProducer {
 
     private static Logger LOGGER= LoggerFactory.getLogger(OrderProducer.class);
     private NewTopic topic;
-
     private KafkaTemplate<String, OrderEvent> kafkaTemplate;
 
 
@@ -26,16 +25,32 @@ public class OrderProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(OrderEvent orderEvent){
-        LOGGER.info(String.format("Order event =>%s",orderEvent.toString()));
 
-        //create message
+    public boolean sendPickUpMessage(OrderEvent orderEvent){
+       LOGGER.info(String.format("Order Pickup =>%s",orderEvent.toString()));
+
         Message<OrderEvent> message= MessageBuilder
-                .withPayload(orderEvent)
+               //create message
+               .withPayload(orderEvent)
                 .setHeader(KafkaHeaders.TOPIC,topic.name())
-                .setHeader(KafkaHeaders.KEY,"food_order")
+                .setHeader(KafkaHeaders.KEY,"PICKUP")
                 .build();
 
         kafkaTemplate.send(message);
+        return true;
+    }
+
+    public boolean sendDeliveryMessage(OrderEvent orderEvent){
+        LOGGER.info(String.format("Order Delivery =>%s",orderEvent.toString()));
+
+        Message<OrderEvent> message= MessageBuilder
+                //create message
+                .withPayload(orderEvent)
+                .setHeader(KafkaHeaders.TOPIC,topic.name())
+                .setHeader(KafkaHeaders.KEY,"DELIVERY")
+                .build();
+
+        kafkaTemplate.send(message);
+        return true;
     }
 }

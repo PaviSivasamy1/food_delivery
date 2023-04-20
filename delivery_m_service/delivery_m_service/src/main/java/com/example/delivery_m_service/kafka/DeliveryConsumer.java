@@ -12,10 +12,15 @@ public class DeliveryConsumer {
     @KafkaListener(topics="${spring.kafka.topic.name}",
             groupId = "${spring.kafka.consumer.group-id}")
     public void consume(ConsumerRecord<String, String> record) {
-        try {
-            LOGGER.info(String.format("Order event =>  %s", record.toString()));
-        } catch (Exception e) {
-            LOGGER.error(String.format("exception thrown %s", e));
+        if(record.key().equals("DELIVERY")) {
+            try {
+                LOGGER.info(String.format("Order Delivered =>  %s", record.toString()));
+            } catch (Exception e) {
+                LOGGER.error(String.format("exception thrown %s", e));
+            }
+        }
+        else{
+            LOGGER.info("Key doesnt match with Delivery, waiting for the message to log");
         }
     }
 
